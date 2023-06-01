@@ -30,8 +30,8 @@ class TransactionRepository implements TransactionRepositoryContract
     public function update(int $id, array $data)
     {
         $transaction = $this->getById($id);
-        $transaction->update($data);
-        return $transaction;
+
+        return tap($transaction)->update($data);
     }
 
     public function delete(int $id)

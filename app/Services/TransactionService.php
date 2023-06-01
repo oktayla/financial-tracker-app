@@ -16,9 +16,9 @@ class TransactionService
     /**
      * Get all transactions.
      *
-     * @return Collection
+     * @return Collection<Transaction>
      */
-    public function getAll()
+    public function getAll(): Collection
     {
         return $this->transactionRepository->getAll();
     }
@@ -63,12 +63,12 @@ class TransactionService
      * @param int $id
      * @return bool
      */
-    public function delete(int $id)
+    public function delete(int $id): bool
     {
-        if ($this->getById($id) === null) {
-            return false;
+        if ($this->getById($id)) {
+            return $this->transactionRepository->delete($id);
         }
 
-        return $this->transactionRepository->delete($id);
+        return false;
     }
 }
