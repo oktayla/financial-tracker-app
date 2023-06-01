@@ -25,4 +25,14 @@ class TransactionCategory extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function scopeIncome($query)
+    {
+        return $query->where('type', TransactionStatus::Income);
+    }
+
+    public function scopeExpense($query)
+    {
+        return $query->where('type', TransactionStatus::Expense);
+    }
 }
