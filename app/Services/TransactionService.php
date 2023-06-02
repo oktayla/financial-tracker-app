@@ -31,7 +31,7 @@ class TransactionService
      */
     public function  getAllByUser(?int $userId = null): Collection
     {
-        $userId ??= auth()->user()->id;
+        $userId ??= auth()->id();
         return $this->transactionRepository->getAllByUser($userId);
     }
 
@@ -84,5 +84,16 @@ class TransactionService
         }
 
         return false;
+    }
+
+    /**
+     * Filter transactions by date range.
+     *
+     * @param array $data
+     * @return Collection<Transaction>
+     */
+    public function filterByDate(array $data): Collection
+    {
+        return $this->transactionRepository->filterByDate($data);
     }
 }

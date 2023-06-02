@@ -7,6 +7,7 @@ export default {
     state () {
         return {
             transactions: [],
+            is_loading: false,
         }
     },
     mutations: {
@@ -15,13 +16,20 @@ export default {
         },
         addTransaction (state, transaction) {
             state.transactions.unshift(transaction)
+        },
+        setLoading (state, loading) {
+            state.is_loading = loading
         }
     },
     actions: {
         async fetchTransactions ({ commit }) {
+            commit('setLoading', true)
+
             const response = await axios.get('/api/transactions')
             const transactions = response.data
+
             commit('setTransactions', transactions)
+            commit('setLoading', false)
         },
         async createTransaction ({ commit }, transaction) {
             const response = await axios.post('/api/transactions', transaction)
@@ -37,6 +45,16 @@ export default {
             toast.success(successMessage, {
                 position: 'top'
             });
+        },
+        async filterTransactions ({ commit }, data) {
+            commit('setLoading', true)
+            commit('setTransactions', [])
+
+            const response = await axios.get('/api/filter-transactions', {params: data})
+            const transactions = response.data.result
+
+            commit('setTransactions', transactions)
+            commit('setLoading', false)
         }
     },
 }

@@ -1,7 +1,13 @@
 <template>
-    <div class="mt-8">
-        <h2 class="text-xl font-semibold mb-4 text-white">📝 Transactions</h2>
+    <div class="mt-8 relative z-10">
+        <div class="flex justify-between">
+            <h2 class="text-xl font-semibold mb-4 text-white">📝 Transactions</h2>
+            <div class="datepicker">
+                <DateFilter />
+            </div>
+        </div>
         <div class="bg-white rounded-lg shadow-md p-6">
+            <Loading />
             <ul>
                 <li class="flex justify-between items-center py-2 border-b"
                     v-for="transaction in transactions" :key="transaction.id">
@@ -11,7 +17,7 @@
                 </li>
 
                 <li class="flex justify-between items-center">
-                    <span v-if="transactions.length === 0">
+                    <span v-if="!is_loading && transactions.length === 0">
                         No transactions yet.
                     </span>
                 </li>
@@ -22,9 +28,18 @@
 
 <script>
 import {mapActions, mapState} from 'vuex';
+import DateFilter from './forms/datefilter.vue';
+import Loading from './loading.vue';
 
 export default {
-    computed: mapState('transaction', ['transactions']),
+    components: {
+        DateFilter,
+        Loading,
+    },
+    computed: mapState('transaction', [
+        'transactions',
+        'is_loading'
+    ]),
     methods: {
         ...mapActions('transaction', ['fetchTransactions']),
         formatCurrency(amount) {

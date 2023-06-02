@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseBuilder;
+use App\Http\Requests\FilterTransactionRequest;
 use App\Http\Requests\TransactionRequest;
 use App\Http\Resources\TransactionResource;
 use App\Services\TransactionService;
@@ -76,5 +77,23 @@ class TransactionController extends Controller
         $this->transactionService->delete($id);
 
         return ResponseBuilder::noContent();
+    }
+
+    /**
+     * Filter transactions by date range.
+     *
+     * @param FilterTransactionRequest $request
+     * @return JsonResponse
+     */
+    public function filterByDate(
+        FilterTransactionRequest $request
+    ) {
+        $transactions = $this->transactionService
+            ->filterByDate($request->validated());
+
+        return ResponseBuilder::ok([
+            'success' => true,
+            'result' => TransactionResource::collection($transactions),
+        ]);
     }
 }

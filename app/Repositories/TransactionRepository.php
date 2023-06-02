@@ -46,4 +46,15 @@ class TransactionRepository implements TransactionRepositoryContract
     {
         return $this->getById($id)->delete();
     }
+
+    public function filterByDate(array $data)
+    {
+        return $this->transaction
+            ->where('user_id', auth()->id())
+            ->whereBetween('created_at', [
+                $data['start_date'],
+                $data['end_date']
+            ])
+            ->get();
+    }
 }
