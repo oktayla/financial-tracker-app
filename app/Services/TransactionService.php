@@ -24,6 +24,18 @@ class TransactionService
     }
 
     /**
+     * Get all transactions by user.
+     *
+     * @param int|null $userId
+     * @return Collection<Transaction>
+     */
+    public function  getAllByUser(?int $userId = null): Collection
+    {
+        $userId ??= auth()->user()->id;
+        return $this->transactionRepository->getAllByUser($userId);
+    }
+
+    /**
      * Get transaction by id.
      *
      * @param int $id
@@ -42,6 +54,8 @@ class TransactionService
      */
     public function create(array $data): Transaction
     {
+        $data['user_id'] = auth()->id();
+
         return $this->transactionRepository->create($data);
     }
 

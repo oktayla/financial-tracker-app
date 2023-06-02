@@ -17,6 +17,14 @@ class TransactionRepository implements TransactionRepositoryContract
         return $this->transaction->get();
     }
 
+    public function getAllByUser(int $userId)
+    {
+        return $this->transaction
+            ->where('user_id', $userId)
+            ->orderByDesc('created_at')
+            ->get();
+    }
+
     public function getById(int $id)
     {
         return $this->transaction->find($id);

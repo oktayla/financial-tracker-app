@@ -30,7 +30,12 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return ResponseBuilder::ok(UserResource::make($user))
+        $response = [
+            'success' => true,
+            'result' => UserResource::make($user),
+        ];
+
+        return ResponseBuilder::ok($response)
             ->withCookie('token', $token, 60 * 24 * 7);
     }
 
@@ -47,6 +52,7 @@ class AuthController extends Controller
 
         if (!$this->userService->checkCredentials($data)) {
             return ResponseBuilder::unauthorized([
+                'success' => false,
                 'message' => 'Invalid credentials!',
             ]);
         }
@@ -55,7 +61,12 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return ResponseBuilder::ok(UserResource::make($user))
+        $response = [
+            'success' => true,
+            'result' => UserResource::make($user),
+        ];
+
+        return ResponseBuilder::ok($response)
             ->withCookie('token', $token, 60 * 24 * 7);
     }
 

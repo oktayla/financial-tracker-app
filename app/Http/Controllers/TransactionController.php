@@ -15,6 +15,26 @@ class TransactionController extends Controller
     ) {
     }
 
+    /**
+     * Get all transactions by user.
+     *
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        $transactions = $this->transactionService->getAllByUser();
+
+        return ResponseBuilder::ok(
+            TransactionResource::collection($transactions)
+        );
+    }
+
+    /**
+     * Store a newly created transaction in storage.
+     *
+     * @param TransactionRequest $request
+     * @return JsonResponse
+     */
     public function store(
         TransactionRequest $request
     ): JsonResponse {
@@ -26,6 +46,13 @@ class TransactionController extends Controller
         );
     }
 
+    /**
+     * Update the specified transaction in storage.
+     *
+     * @param TransactionRequest $request
+     * @param int $id
+     * @return JsonResponse
+     */
     public function update(
         TransactionRequest $request,
         int $id
@@ -38,6 +65,12 @@ class TransactionController extends Controller
         );
     }
 
+    /**
+     * Remove the specified transaction from storage.
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
     public function destroy(int $id): JsonResponse
     {
         $this->transactionService->delete($id);

@@ -26,12 +26,9 @@ class TransactionRequest extends FormRequest
             'type' => [
                 'required',
                 'string',
-                Rule::in([
-                    TransactionStatus::Income,
-                    TransactionStatus::Expense,
-                ])
+                Rule::in(['income', 'expense'])
             ],
-            'amount' => ['required', 'decimal:10'],
+            'amount' => ['required', 'gt:0'],
         ];
     }
 }
