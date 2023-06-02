@@ -1,0 +1,23 @@
+# fly.toml app configuration file generated for lively-surf-7028 on 2023-06-02T15:48:13+03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "lively-surf-7028"
+primary_region = "otp"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+
+[build]
+  image = "mysql:8.0.32"
+
+[env]
+  MYSQL_DATABASE = "some_db"
+  MYSQL_USER = "non_root_user"
+
+[processes]
+  app = "--datadir /data/mysql\n--default-authentication-plugin mysql_native_password\n--performance-schema=OFF\n--innodb-buffer-pool-size 64M"
+
+[[mounts]]
+  source = "mysqldata"
+  destination = "/data"
