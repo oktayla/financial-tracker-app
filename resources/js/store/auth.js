@@ -17,6 +17,16 @@ export default {
         }
     },
     actions: {
+        async getMe({ commit }) {
+            const currencyCode = this.state.currency.selectedCurrency?.code ?? 'USD'
+            await axios.get('/api/me?currency=' + currencyCode)
+                .then(response => {
+                    commit('setUser', response.data)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        },
         async login ({ commit }, credentials) {
             commit('setError', null)
             await axios.get('/sanctum/csrf-cookie')

@@ -1,32 +1,33 @@
 <template>
-    <div class="p-3 mb-3 bg-gray-100 rounded-lg z-20 relative">
-        <div class="flex justify-between items-center" v-if="user">
-            <div class="user-info">
-                <p class="text-lg">
-                    <span class="font-semibold">Hello, {{ user.name }} 👋</span>
-                    <a @click.prevent="logout" href="#" class="text-gray-600 text-sm ml-2">(Log out)</a>
-                </p>
-            </div>
+    <div class="p-3 mb-3 bg-white rounded-lg z-20 relative">
+        <div class="flex justify-between items-center pb-3 border-b" v-if="authenticated">
+            <UserProfile />
 
             <div class="options">
                 <SelectCurrency />
             </div>
         </div>
+
+        <SimpleStats />
+        <DailyStats />
     </div>
 </template>
 
 <script>
-import {mapState, mapActions} from 'vuex';
+import {mapGetters} from 'vuex';
 import SelectCurrency from './forms/select-currency.vue';
+import UserProfile from "./overview/user-profile.vue";
+import DailyStats from './overview/daily-stats.vue';
+import SimpleStats from './overview/simple-stats.vue';
 
 export default {
     name: 'Overview',
     components: {
+        DailyStats,
+        UserProfile,
+        SimpleStats,
         SelectCurrency,
     },
-    computed: {
-        ...mapState('auth', ['user']),
-    },
-    methods: mapActions('auth', ['logout']),
+    computed: mapGetters('auth', ['authenticated']),
 }
 </script>

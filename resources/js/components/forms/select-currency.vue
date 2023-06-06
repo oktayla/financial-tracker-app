@@ -12,7 +12,7 @@
             selectLabel=""
             deselectLabel=""
             selectedLabel=""
-            @update:model-value="updateCurrency">
+            @update:model-value="_updateCurrency">
         </VueMultiselect>
     </div>
 </template>
@@ -30,10 +30,23 @@ export default {
         'currencies',
         'selectedCurrency',
     ]),
-    methods: mapActions('currency', [
-        'getCurrencies',
-        'updateCurrency',
-    ]),
+    methods: {
+        ...mapActions('currency', [
+            'updateCurrency',
+            'getCurrencies',
+        ]),
+        ...mapActions('transaction', [
+            'fetchTransactions',
+        ]),
+        ...mapActions('auth', [
+            'getMe',
+        ]),
+        _updateCurrency(currency) {
+            this.updateCurrency(currency);
+            this.getMe();
+            this.fetchTransactions();
+        },
+    },
     mounted() {
         this.getCurrencies();
     },

@@ -23,6 +23,7 @@ export default {
     },
     actions: {
         async fetchTransactions ({ commit }) {
+            commit('setTransactions', [])
             commit('setLoading', true)
 
             const currencyCode = this.state.currency.selectedCurrency?.code ?? 'USD'
@@ -51,6 +52,7 @@ export default {
             commit('setLoading', true)
             commit('setTransactions', [])
 
+            data['currency'] = this.state.currency.selectedCurrency?.code ?? 'USD'
             const response = await axios.get('/api/filter-transactions', {params: data})
             const transactions = response.data.result
 

@@ -12,8 +12,8 @@
                 <li class="flex justify-between items-center py-2 border-b"
                     v-for="transaction in transactions" :key="transaction.id">
                     <span class="text-gray-700">{{ transaction.category.name }}</span>
-                    <span class="font-semibold text-green-500" v-if="transaction.type === 'income'">+{{ formatCurrency(transaction.amount) }}</span>
-                    <span class="font-semibold text-red-500" v-if="transaction.type === 'expense'">-{{ formatCurrency(transaction.amount) }}</span>
+                    <span class="font-semibold text-green-500" v-if="transaction.type === 'income'">+{{ formatCurrency(transaction.formatted_amount, selectedCurrency.code) }}</span>
+                    <span class="font-semibold text-red-500" v-if="transaction.type === 'expense'">-{{ formatCurrency(transaction.formatted_amount, selectedCurrency.code) }}</span>
                 </li>
 
                 <li class="flex justify-between items-center">
@@ -36,10 +36,15 @@ export default {
         DateFilter,
         Loading,
     },
-    computed: mapState('transaction', [
-        'transactions',
-        'is_loading'
-    ]),
+    computed: {
+        ...mapState('transaction', [
+            'transactions',
+            'is_loading'
+        ]),
+        ...mapState('currency', [
+            'selectedCurrency',
+        ])
+    },
     methods: {
         ...mapActions('transaction', ['fetchTransactions']),
         formatCurrency(amount, currency = 'USD') {
