@@ -65,6 +65,7 @@ class AuthController extends Controller
             'success' => true,
             'result' => UserResource::make($user)->additional([
                 'overview' => $this->userService->getOverview($user->id),
+                'daily_stats' => $this->userService->getDailyStats($user->id),
             ]),
         ];
 
@@ -95,11 +96,10 @@ class AuthController extends Controller
     public function user(
         Request $request
     ): JsonResponse {
-        $userOverview = $this->userService->getOverview();
-
         return ResponseBuilder::ok(
             UserResource::make($request->user())->additional([
-                'overview' => $userOverview,
+                'overview' => $this->userService->getOverview(),
+                'daily_stats' => $this->userService->getDailyStats(),
             ])
         );
     }

@@ -117,4 +117,38 @@ class UserService
             'currency' => $toCurrency,
         ];
     }
+
+    /**
+     * Daily stats of the user
+     */
+    public function getDailyStats(int|null $id = null): array
+    {
+        $user = $id ? $this->getById($id) : auth()->user();
+        $transactions = $user->transactions()->get();
+
+        $fromCurrency = currency()->getUserCurrency();
+        $toCurrency = request('currency', $fromCurrency);
+
+        if (!currency()->hasCurrency($toCurrency)) {
+            $toCurrency = $fromCurrency;
+        }
+
+        $weeklyStats = $transactions->groupBy(function ($transaction) {
+            return $transaction->created_at->format('Y-m-d');
+        })->map(function ($transactions) use ($fromCurrency, $toCurrency) {
+            $totalIncome = $transactions->where('type', TransactionStatus::Income)->sum('amount');
+            $totalExpense = $transactions->where('type', TransactionStatus::Expense)->sum('amount');
+
+            $totalIncome = currency($totalIncome, $fromCurrency, $toCurrency, false);
+            $totalExpense = currency($totalExpense, $fromCurrency, $toCurrency, false);
+
+            return [
+                'total_income' => $totalIncome,
+                'total_expense' => $totalExpense,
+                'currency' => $toCurrency,
+            ];
+        })->splice(-7);
+
+        return $weeklyStats->toArray();
+    }
 }
