@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\TransactionCategoryController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +13,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('transactions', TransactionController::class);
     Route::get('filter-transactions', [TransactionController::class, 'filterByDate']);
     Route::get('transaction-categories', [TransactionCategoryController::class, 'index']);
+
+    Route::get('currencies', [CurrencyController::class, 'activeCurrencies']);
 
     Route::get('/me', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);

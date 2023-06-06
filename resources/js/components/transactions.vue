@@ -42,15 +42,15 @@ export default {
     ]),
     methods: {
         ...mapActions('transaction', ['fetchTransactions']),
-        formatCurrency(amount) {
+        formatCurrency(amount, currency = 'USD') {
             return new Intl.NumberFormat('en-us', {
                 style: 'currency',
-                currency: 'USD',
+                currency: currency,
                 minimumFractionDigits: 2
             }).format(amount);
         }
     },
-    created() {
+    mounted() {
         this.fetchTransactions();
     }
 }

@@ -5,6 +5,8 @@
         </h1>
         <p class="text-center text-white text-lg">Take Charge of Your Finances, Simplify Your Money Management</p>
     </header>
+
+    <Overview v-if="user" />
 </template>
 
 <style>
@@ -27,3 +29,14 @@ header h1 {
     background-image: linear-gradient(to right, #ffff00 0%, #41ff00 100%);
 }
 </style>
+<script>
+import {mapState} from 'vuex';
+import Overview from './overview.vue';
+
+export default {
+    computed: mapState('auth', ['user']),
+    components: {
+        Overview,
+    },
+}
+</script>

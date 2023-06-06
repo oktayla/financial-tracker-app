@@ -32,6 +32,7 @@ export default {
         async logout ({ commit }) {
             await axios.post('/api/logout')
             commit('setUser', null)
+            await router.push({name: 'login'})
         }
     },
     getters: {
