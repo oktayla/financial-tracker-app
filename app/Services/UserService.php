@@ -124,7 +124,7 @@ class UserService
     public function getDailyStats(int|null $id = null): array
     {
         $user = $id ? $this->getById($id) : auth()->user();
-        $transactions = $user->transactions()->get();
+        $transactions = $user->transactions()->orderByDesc('created_at')->get();
 
         $fromCurrency = currency()->getUserCurrency();
         $toCurrency = request('currency', $fromCurrency);
