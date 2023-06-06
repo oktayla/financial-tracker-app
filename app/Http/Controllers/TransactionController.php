@@ -87,7 +87,7 @@ class TransactionController extends Controller
      */
     public function filterByDate(
         FilterTransactionRequest $request
-    ) {
+    ): JsonResponse {
         $transactions = $this->transactionService
             ->filterByDate($request->validated());
 

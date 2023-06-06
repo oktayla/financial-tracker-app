@@ -14,6 +14,7 @@ class TransactionResource extends JsonResource
             'category' => new TransactionCategoryResource($this->category),
             'type' => $this->type,
             'amount' => $this->amount,
+            'formatted_amount' => $this->formatted_amount,
             'created_at' => $this->created_at,
         ];
     }

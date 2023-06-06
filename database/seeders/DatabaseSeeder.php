@@ -12,10 +12,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
+        /*User::factory()->create([
             'email' => 'demo@ondokuzon.com',
         ]);
 
-        $this->call(TransactionCategoriesSeeder::class);
+        $this->call(TransactionCategoriesSeeder::class);*/
     }
 }

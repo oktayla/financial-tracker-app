@@ -22,6 +22,10 @@ class Transaction extends Model
         'type' => TransactionStatus::class,
     ];
 
+    protected $appends = [
+        'formatted_amount',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -40,5 +44,17 @@ class Transaction extends Model
     public function scopeExpense($query)
     {
         return $query->where('type', TransactionStatus::Expense);
+    }
+
+    public function getFormattedAmountAttribute(): string
+    {
+        $fromCurrency = currency()->getUserCurrency();
+
+        $toCurrency = request()->get('currency');
+        if (!currency()->hasCurrency($toCurrency)) {
+            $toCurrency = $fromCurrency;
+        }
+
+        return currency($this->amount, $fromCurrency, $toCurrency, false);
     }
 }
