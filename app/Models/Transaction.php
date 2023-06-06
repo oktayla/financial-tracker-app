@@ -20,6 +20,7 @@ class Transaction extends Model
 
     protected $casts = [
         'type' => TransactionStatus::class,
+        'amount' => 'double',
     ];
 
     protected $appends = [

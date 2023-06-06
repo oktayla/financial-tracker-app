@@ -63,7 +63,9 @@ class AuthController extends Controller
 
         $response = [
             'success' => true,
-            'result' => UserResource::make($user),
+            'result' => UserResource::make($user)->additional([
+                'overview' => $this->userService->getOverview($user->id),
+            ]),
         ];
 
         return ResponseBuilder::ok($response)
@@ -93,8 +95,12 @@ class AuthController extends Controller
     public function user(
         Request $request
     ): JsonResponse {
+        $userOverview = $this->userService->getOverview();
+
         return ResponseBuilder::ok(
-            UserResource::make($request->user())
+            UserResource::make($request->user())->additional([
+                'overview' => $userOverview,
+            ])
         );
     }
 }

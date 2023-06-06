@@ -3,8 +3,13 @@
 namespace App\Services;
 
 use App\Contracts\UserRepositoryContract;
+use App\Enums\TransactionStatus;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use InvalidArgumentException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class UserService
 {
@@ -77,5 +82,39 @@ class UserService
         $user = $this->getById($id);
 
         return tap($user)->update($id, $data);
+    }
+
+    /**
+     * Overview of the user.
+     *
+     * @param int|null $id
+     * @return array
+     */
+    public function getOverview(int|null $id = null): array
+    {
+        $user = $id ? $this->getById($id) : auth()->user();
+        $transactions = $user->transactions()->get();
+
+        $totalIncome = $transactions->where('type', TransactionStatus::Income)->sum('amount');
+        $totalExpense = $transactions->where('type', TransactionStatus::Expense)->sum('amount');
+        $totalBalance = $totalIncome - $totalExpense;
+
+        $fromCurrency = currency()->getUserCurrency();
+        $toCurrency = request('currency', $fromCurrency);
+
+        if (!currency()->hasCurrency($toCurrency)) {
+            $toCurrency = $fromCurrency;
+        }
+
+        $totalIncome = currency($totalIncome, $fromCurrency, $toCurrency, false);
+        $totalExpense = currency($totalExpense, $fromCurrency, $toCurrency, false);
+        $totalBalance = currency($totalBalance, $fromCurrency, $toCurrency, false);
+
+        return [
+            'total_income' => $totalIncome,
+            'total_expense' => $totalExpense,
+            'total_balance' => $totalBalance,
+            'currency' => $toCurrency,
+        ];
     }
 }
