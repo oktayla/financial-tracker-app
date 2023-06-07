@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('currency:update')->everyThirtyMinutes();
+        $schedule->command('currency:update --openexchangerates')->everyThirtyMinutes();
     }
 
     /**
