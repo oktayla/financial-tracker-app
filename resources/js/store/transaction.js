@@ -34,7 +34,8 @@ export default {
             commit('setLoading', false)
         },
         async createTransaction ({ commit }, transaction) {
-            const response = await axios.post('/api/transactions', transaction)
+            const currencyCode = this.state.currency.selectedCurrency?.code ?? 'USD'
+            const response = await axios.post('/api/transactions?currency=' + currencyCode, transaction)
             commit('addTransaction', response.data)
 
             let successMessage;
