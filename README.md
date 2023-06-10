@@ -71,7 +71,8 @@ Some key features of the application include:
 - 💸 Expense Tracking: Add, edit, and delete expenses with details such as amount, category, and date.
 - 💰 Income Tracking: Record your income sources and keep track of your earnings.
 - 💳 Budgeting: Set monthly budgets for different expense categories and monitor your spending.
-- ~~📊 Reports and Visualization: Gain insights into your financial health with visual charts and reports.~~
+- 📊 Reports and Visualization: Gain insights into your financial health with visual charts and reports.
+- 🌍 Multi-Currency Support: Track expenses and income in different currencies for travelers or individuals with international financial transactions.
 
 ## Contributing
 
